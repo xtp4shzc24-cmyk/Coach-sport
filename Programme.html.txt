@@ -1,0 +1,972 @@
+
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon Programme Coach</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#111;--card:#1e1e1e;--card2:#272727;--accent:#f5a623;--accent2:#e05c2b;--green:#4caf80;--red:#e05c5c;--blue:#5b9cf6;--text:#f0ece3;--muted:#999;--border:#2e2e2e}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(17,17,17,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{flex-shrink:0;background:none;border:none;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;padding:14px 16px;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s}
+nav button.active{color:var(--accent);border-bottom-color:var(--accent)}
+nav button:hover{color:var(--text)}
+/* HERO */
+.hero{background:linear-gradient(135deg,#1c1100 0%,#111 65%);padding:40px 20px 32px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50px;right:-70px;width:280px;height:280px;background:radial-gradient(circle,rgba(245,166,35,.15) 0%,transparent 70%);border-radius:50%}
+.hl{font-size:11px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:8px}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(38px,10vw,64px);line-height:.88;color:var(--text)}
+.hero h1 span{color:var(--accent)}
+.hero-stats{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+.sp{background:var(--card);border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:12px;font-weight:500;color:var(--text)}
+.sp strong{color:var(--accent)}
+/* SECTIONS */
+section{display:none;padding:16px 16px 90px;max-width:660px;margin:0 auto}
+section.active{display:block}
+.stitle{font-family:'Bebas Neue',sans-serif;font-size:25px;color:var(--text);margin:18px 0 12px;letter-spacing:1px}
+.stitle span{color:var(--accent)}
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px}
+.ctitle{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);letter-spacing:1px;margin-bottom:10px}
+/* TAGS */
+.tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-radius:5px;padding:3px 8px}
+.tag.orange{background:var(--accent);color:#000}
+.tag.green{background:var(--green);color:#000}
+.tag.blue{background:var(--blue);color:#fff}
+.tag.purple{background:#9b6fdf;color:#fff}
+.tag.red{background:var(--red);color:#fff}
+.sweet{display:inline-block;background:linear-gradient(135deg,#f5a623,#e05c2b);color:#000;font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px;letter-spacing:1px}
+/* TIP BOXES */
+.tip{border-radius:12px;padding:12px 14px;margin-bottom:12px;font-size:13px;line-height:1.65;color:var(--text)}
+.tip.green{background:rgba(76,175,128,.1);border:1px solid rgba(76,175,128,.28)}
+.tip.orange{background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.28)}
+/* CALORIES GRID */
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.cb{background:var(--card2);border-radius:13px;padding:14px;border:1px solid var(--border);text-align:center}
+.cb .n{font-family:'Bebas Neue',sans-serif;font-size:32px;line-height:1}
+.cb .n.a{color:var(--accent)}.cb .n.g{color:var(--green)}.cb .n.r{color:var(--red)}
+.cb .l{font-size:10px;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.7px}
+/* CAL ROWS */
+.cr{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border)}
+.cr:last-child{border-bottom:none}
+.cr .cl{font-size:13px;color:var(--text)}
+.cv{font-size:14px;font-weight:700;color:var(--accent)}
+.cv.g{color:var(--green)}
+/* PROGRESS BAR */
+.pbw{background:var(--card2);border-radius:100px;height:8px;overflow:hidden;margin:7px 0 4px}
+.pb{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--accent2),var(--accent))}
+/* EXERCISE CARDS */
+.ex{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:12px}
+.ex-img{width:100%;height:148px;background:#181818;display:block}
+.ex-img svg{width:100%;height:100%;display:block}
+.ex-body{padding:13px 15px}
+.ex-name{font-family:'Bebas Neue',sans-serif;font-size:21px;color:var(--text);margin-bottom:2px}
+.ex-det{font-size:12px;color:var(--muted);margin-bottom:6px}
+.ex-tips{font-size:13px;color:var(--text);line-height:1.65}
+.ex-sets{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.sb{background:rgba(245,166,35,.12);border:1px solid rgba(245,166,35,.3);color:var(--accent);font-size:11px;font-weight:700;padding:3px 9px;border-radius:7px}
+.loc{display:inline-flex;align-items:center;gap:4px;background:rgba(76,175,128,.12);border:1px solid rgba(76,175,128,.28);color:var(--green);font-size:11px;font-weight:700;padding:3px 9px;border-radius:7px;margin-top:7px}
+/* RECIPE CARDS */
+.rc{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:12px}
+.rh{padding:14px 16px 11px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.rn{font-family:'Bebas Neue',sans-serif;font-size:19px;color:var(--text);line-height:1.1}
+.rsub{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap;align-items:center}
+.rkcal{text-align:right;flex-shrink:0}
+.rkcal .n{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--accent)}
+.rkcal .l{font-size:10px;color:var(--muted);text-transform:uppercase}
+.rb{padding:13px 16px}
+.ri{font-size:13px;color:var(--muted);margin-bottom:9px;line-height:1.6}
+.rs{list-style:none;counter-reset:s}
+.rs li{counter-increment:s;font-size:13px;color:var(--text);padding:6px 0 6px 26px;border-bottom:1px solid var(--border);position:relative;line-height:1.5}
+.rs li:last-child{border-bottom:none}
+.rs li::before{content:counter(s);position:absolute;left:0;top:7px;background:var(--accent);color:#000;width:17px;height:17px;border-radius:50%;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.rm{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+.mb{background:var(--card2);border-radius:7px;border:1px solid var(--border);padding:5px 10px;font-size:12px;font-weight:500;color:var(--text)}
+.mb span{color:var(--accent);font-weight:700}
+.pn{background:rgba(76,175,128,.1);border:1px solid rgba(76,175,128,.28);border-radius:8px;padding:6px 11px;margin-top:8px;font-size:12px;color:var(--green);font-weight:600}
+/* CAT HEADER */
+.ch{display:flex;align-items:center;gap:10px;background:var(--card2);border:1px solid var(--border);border-radius:11px;padding:11px 14px;margin:16px 0 10px}
+.ch .ico{font-size:20px}
+.ct{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);letter-spacing:1px}
+.cs{font-size:12px;color:var(--muted)}
+/* TRACKER */
+.tr{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border)}
+.tr:last-child{border-bottom:none}
+.tl{font-size:14px;font-weight:500;color:var(--text)}
+.ti{background:var(--card2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;width:74px;text-align:center;padding:8px;outline:none;transition:border-color .2s}
+.ti:focus{border-color:var(--accent)}
+.ti::placeholder{color:var(--muted)}
+.sbtn{width:100%;background:linear-gradient(135deg,var(--accent2),var(--accent));border:none;border-radius:13px;color:#000;font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:1px;padding:15px;cursor:pointer;margin-top:14px;transition:transform .1s}
+.sbtn:active{transform:scale(.98)}
+.le{background:var(--card2);border-radius:9px;border:1px solid var(--border);padding:10px 13px;margin-bottom:7px;font-size:13px;display:flex;justify-content:space-between;align-items:center;color:var(--text)}
+.ld{color:var(--muted);font-size:12px}
+/* HALTER CARD */
+.hc{background:linear-gradient(135deg,#1c1200,#1e1e1e);border:1px solid rgba(245,166,35,.3);border-radius:16px;padding:16px;margin-bottom:12px}
+</style>
+</head>
+<body>
+<!-- HERO -->
+<div class="hero">
+  <div class="hl">Ton programme personnalisé</div>
+  <h1>SPORT &<br><span>NUTRITION</span></h1>
+  <div class="hero-stats">
+    <div class="sp">🧍 <strong>1m75</strong> — 77 kg habillé</div>
+    <div class="sp">📊 IMC <strong>25.1</strong></div>
+    <div class="sp">🎯 <strong>-3 à -5 kg</strong>/mois</div>
+    <div class="sp">🔥 <strong>2 200 kcal</strong>/jour</div>
+  </div>
+</div>
+<!-- NAV -->
+<nav>
+  <button class="active" onclick="show('cal',this)">🔥 Calories</button>
+  <button onclick="show('maison',this)">💪 Maison</button>
+  <button onclick="show('lac',this)">🌊 Lac</button>
+  <button onclick="show('halt',this)">🏋️ Haltères</button>
+  <button onclick="show('recettes',this)">🍽️ Recettes</button>
+  <button onclick="show('suivi',this)">📊 Suivi</button>
+</nav>
+
+<!-- ═══ CALORIES ═══ -->
+
+<section id="cal" class="active">
+  <div class="stitle">🔥 Tes <span>Calories</span></div>
+  <div class="tip orange"><strong>📐 Profil :</strong> 1m75 / ~75 kg nu — IMC 25.1. Objectif : perdre 3–5 kg de graisse en construisant du muscle en même temps.</div>
+  <div class="cg">
+    <div class="cb"><div class="n a">2 450</div><div class="l">kcal maintenance sans sport</div></div>
+    <div class="cb"><div class="n r">2 200</div><div class="l">kcal à manger par jour</div></div>
+    <div class="cb"><div class="n g">250</div><div class="l">déficit alimentation / jour</div></div>
+    <div class="cb"><div class="n a">~300</div><div class="l">kcal brûlées par séance sport</div></div>
+  </div>
+  <div class="card">
+    <div class="ctitle">📉 Déficit total journalier</div>
+    <p style="font-size:13px;color:var(--text);line-height:1.7">Alimentation <strong style="color:var(--accent)">-250 kcal</strong> + Sport <strong style="color:var(--accent)">-300 kcal</strong> = <strong style="color:var(--green)">~550 kcal/jour</strong><br>→ 500g de graisse = 3 500 kcal → <strong style="color:var(--accent)">~1 à 1,5 kg de graisse pure / mois</strong></p>
+    <div class="pbw"><div class="pb" style="width:55%"></div></div>
+    <p style="font-size:12px;color:var(--muted);margin-top:3px">Progression vers objectif -5 kg</p>
+  </div>
+
+  <div class="stitle" style="font-size:20px;margin-top:10px">🏃 Calories brûlées / exercice</div>
+  <div class="card">
+    <div class="cr"><span class="cl">🏃 Lac 6 tours jogging (~2,7 km)</span><span class="cv">~200 kcal</span></div>
+    <div class="cr"><span class="cl">🏃 Lac 8 tours jogging (~3,6 km)</span><span class="cv">~270 kcal</span></div>
+    <div class="cr"><span class="cl">🏃 Lac 10 tours jogging (~4,5 km)</span><span class="cv">~340 kcal</span></div>
+    <div class="cr"><span class="cl">💪 Circuit Pecs x4 séries</span><span class="cv">~120 kcal</span></div>
+    <div class="cr"><span class="cl">🤸 Circuit Abdos x4 séries</span><span class="cv">~80 kcal</span></div>
+    <div class="cr"><span class="cl">🔥 Full Body vendredi</span><span class="cv">~350 kcal</span></div>
+    <div class="cr"><span class="cl">💥 10 Burpees (3 minutes)</span><span class="cv">~60 kcal</span></div>
+    <div class="cr"><span class="cl">🏋️ Circuit haltères x3</span><span class="cv">~130 kcal</span></div>
+    <div class="cr"><span class="cl">🚶 Balade lac repos actif</span><span class="cv g">~80 kcal</span></div>
+  </div>
+
+  <div class="stitle" style="font-size:20px;margin-top:10px">🍽️ Budget calories par repas</div>
+  <div class="card">
+    <div class="cr"><span class="cl">🌅 Petit déjeuner</span><span class="cv">400–500 kcal</span></div>
+    <div class="cr"><span class="cl">🍌 Collation matin</span><span class="cv">150–200 kcal</span></div>
+    <div class="cr"><span class="cl">🍽️ Déjeuner</span><span class="cv">550–650 kcal</span></div>
+    <div class="cr"><span class="cl">🍫 Collation après-sport</span><span class="cv">150–200 kcal</span></div>
+    <div class="cr"><span class="cl">🌙 Dîner</span><span class="cv">350–450 kcal</span></div>
+    <div style="margin-top:11px;padding-top:11px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:14px;font-weight:700;color:var(--text)">TOTAL</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent)">~2 100–2 200 kcal ✅</span>
+    </div>
+  </div>
+  <div class="tip green"><strong>💡 Appétit d'enfant ?</strong> Mange tes 2 200 kcal en <strong>5 petits repas</strong> de ~400 kcal. C'est gérable. Ne saute JAMAIS de repas — ça ralentit ton métabolisme et tu perds du muscle au lieu de la graisse.</div>
+</section>
+<!-- ═══ MAISON ═══ -->
+<section id="maison">
+  <div class="stitle">💪 Exercices <span>Maison</span></div>
+  <div class="tip orange"><strong>🏠 Zéro matos.</strong> Tout se fait dans ta chambre ou ton salon. Sol + chaise = suffisant pour tout faire.</div>
+
+  <!-- POMPES LARGES -->
+
+  <div class="ex">
+    <div class="ex-img"><svg viewBox="0 0 400 148" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="148" fill="#181818"/>
+      <line x1="30" y1="124" x2="370" y2="124" stroke="#2e2e2e" stroke-width="2"/>
+      <ellipse cx="200" cy="102" rx="10" ry="10" fill="#f5a623"/>
+      <line x1="200" y1="112" x2="200" y2="122" stroke="#f0ece3" stroke-width="3"/>
+      <line x1="200" y1="114" x2="138" y2="118" stroke="#f0ece3" stroke-width="3"/>
+      <line x1="200" y1="114" x2="262" y2="118" stroke="#f0ece3" stroke-width="3"/>
+      <circle cx="138" cy="120" r="5" fill="#e05c2b"/><circle cx="262" cy="120" r="5" fill="#e05c2b"/>
+      <line x1="200" y1="122" x2="182" y2="124" stroke="#f0ece3" stroke-width="3"/><line x1="200" y1="122" x2="218" y2="124" stroke="#f0ece3" stroke-width="3"/>
+      <circle cx="182" cy="124" r="4" fill="#666"/><circle cx="218" cy="124" r="4" fill="#666"/>
+      <text x="200" y="44" text-anchor="middle" fill="#f5a623" font-size="13" font-weight="bold" font-family="sans-serif">↕ MONTE / DESCEND</text>
+      <text x="138" y="142" text-anchor="middle" fill="#e05c2b" font-size="10" font-family="sans-serif">LARGE</text>
+      <text x="262" y="142" text-anchor="middle" fill="#e05c2b" font-size="10" font-family="sans-serif">LARGE</text>
+      <text x="200" y="20" text-anchor="middle" fill="#888" font-size="11" font-family="sans-serif">POMPES LARGES — PECTORAUX EXTÉRIEURS</text>
+      <text x="310" y="108" fill="#4caf80" font-size="10" font-family="sans-serif">coudes 45°</text>
+    </svg></div>
+    <div class="ex-body">
+      <div class="ex-name">POMPES LARGES</div><div class="ex-det">Pectoraux extérieurs · Épaules</div>
+      <div class="ex-sets"><span class="sb">3–4 séries</span><span class="sb">15 reps</span><span class="sb">repos 1 min</span></div>
+      <div class="loc">🏠 Salon / chambre</div>
+      <div class="ex-tips" style="margin-top:9px">👐 Mains plus larges que les épaules.<br>📏 Corps droit de la tête aux pieds.<br>⚠️ Coudes à 45° du corps — pas écartés à 90°.</div>
+    </div>
+  </div>
+
+  <!-- POMPES SERREES -->
+
+  <div class="ex">
+    <div class="ex-img"><svg viewBox="0 0 400 148" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="148" fill="#181818"/>
+      <line x1="30" y1="124" x2="370" y2="124" stroke="#2e2e2e" stroke-width="2"/>
+      <ellipse cx="200" cy="102" rx="10" ry="10" fill="#f5a623"/>
+      <line x1="200" y1="112" x2="200" y2="122" stroke="#f0ece3" stroke-width="3"/>
+      <line x1="200" y1="114" x2="168" y2="118" stroke="#f0ece3" stroke-width="3"/><line x1="200" y1="114" x2="232" y2="118" stroke="#f0ece3" stroke-width="3"/>
+      <circle cx="168" cy="120" r="5" fill="#5b9cf6"/><circle cx="232" cy="120" r="5" fill="#5b9cf6"/>
+      <line x1="168" y1="132" x2="232" y2="132" stroke="#5b9cf6" stroke-width="1.5"/>
+      <text x="200" y="20" text-anchor="middle" fill="#888" font-size="11" font-family="sans-serif">POMPES SERRÉES — TRICEPS + PECS INTERNES</text>
+      <text x="200" y="46" text-anchor="middle" fill="#5b9cf6" font-size="12" font-weight="bold" font-family="sans-serif">COUDES COLLÉS AU CORPS !</text>
+      <text x="200" y="146" text-anchor="middle" fill="#5b9cf6" font-size="10" font-family="sans-serif">Mains rapprochées sous la poitrine</text>
+    </svg></div>
+    <div class="ex-body">
+      <div class="ex-name">POMPES SERRÉES</div><div class="ex-det">Triceps · Pectoraux internes</div>
+      <div class="ex-sets"><span class="sb">3–4 séries</span><span class="sb">15 reps</span><span class="sb">repos 1 min</span></div>
+      <div class="loc">🏠 Salon / chambre</div>
+      <div class="ex-tips" style="margin-top:9px">🤜 Mains sous la poitrine, rapprochées.<br>📌 Coudes COLLÉS au corps — c'est le secret.<br>💡 Triceps = 60% du volume du bras !</div>
+    </div>
+  </div>
+
+  <!-- DIPS CHAISE -->
+
+  <div class="ex">
+    <div class="ex-img"><svg viewBox="0 0 400 148" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="148" fill="#181818"/>
+      <rect x="128" y="78" width="62" height="8" rx="3" fill="#4a4a4a"/><rect x="210" y="78" width="62" height="8" rx="3" fill="#4a4a4a"/>
+      <rect x="133" y="86" width="8" height="36" fill="#3a3a3a"/><rect x="180" y="86" width="8" height="36" fill="#3a3a3a"/>
+      <rect x="214" y="86" width="8" height="36" fill="#3a3a3a"/><rect x="260" y="86" width="8" height="36" fill="#3a3a3a"/>
+      <circle cx="200" cy="50" r="12" fill="#f5a623"/>
+      <line x1="200" y1="62" x2="200" y2="78" stroke="#f0ece3" stroke-width="3.5"/>
+      <line x1="200" y1="68" x2="158" y2="78" stroke="#f0ece3" stroke-width="3"/><line x1="200" y1="68" x2="242" y2="78" stroke="#f0ece3" stroke-width="3"/>
+      <circle cx="158" cy="80" r="5" fill="#e05c2b"/><circle cx="242" cy="80" r="5" fill="#e05c2b"/>
+      <line x1="200" y1="78" x2="184" y2="122" stroke="#f0ece3" stroke-width="3"/><line x1="200" y1="78" x2="216" y2="122" stroke="#f0ece3" stroke-width="3"/>
+      <circle cx="184" cy="127" r="5" fill="#666"/><circle cx="216" cy="127" r="5" fill="#666"/>
+      <text x="200" y="20" text-anchor="middle" fill="#888" font-size="11" font-family="sans-serif">DIPS SUR CHAISE — TRICEPS</text>
+      <text x="200" y="144" text-anchor="middle" fill="#e05c2b" font-size="11" font-family="sans-serif">↓ Descends en pliant les coudes ↓</text>
+    </svg></div>
+    <div class="ex-body">
+      <div class="ex-name">DIPS SUR CHAISE</div><div class="ex-det">Triceps · Épaules · Pectoraux bas</div>
+      <div class="ex-sets"><span class="sb">3–4 séries</span><span class="sb">12–20 reps</span><span class="sb">repos 1 min</span></div>
+      <div class="loc">🏠 Chaise / canapé</div>
+      <div class="ex-tips" style="margin-top:9px">🪑 Mains sur le bord de la chaise derrière toi.<br>⬇️ Descends en pliant les coudes à 90°.<br>💪 CE SONT LES BRAS qui remontent — pas les jambes.</div>
+    </div>
+  </div>
+
+  <!-- SQUATS -->
+
+  <div class="ex">
+    <div class="ex-img"><svg viewBox="0 0 400 148" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="148" fill="#181818"/>
+      <line x1="30" y1="134" x2="370" y2="134" stroke="#2e2e2e" stroke-width="2"/>
+      <circle cx="128" cy="30" r="11" fill="#f5a623"/>
+      <line x1="128" y1="41" x2="128" y2="80" stroke="#f0ece3" stroke-width="4"/>
+      <line x1="128" y1="55" x2="108" y2="65" stroke="#f0ece3" stroke-width="3"/><line x1="128" y1="55" x2="148" y2="65" stroke="#f0ece3" stroke-width="3"/>
+      <line x1="128" y1="80" x2="115" y2="110" stroke="#f0ece3" stroke-width="3.5"/><line x1="128" y1="80" x2="141" y2="110" stroke="#f0ece3" stroke-width="3.5"/>
+      <line x1="115" y1="110" x2="110" y2="134" stroke="#f0ece3" stroke-width="3"/><line x1="141" y1="110" x2="146" y2="134" stroke="#f0ece3" stroke-width="3"/>
+      <text x="128" y="148" text-anchor="middle" fill="#888" font-size="9" font-family="sans-serif">DEBOUT</text>
+      <circle cx="272" cy="52" r="11" fill="#f5a623"/>
+      <line x1="272" y1="63" x2="272" y2="82" stroke="#f0ece3" stroke-width="4"/>
+      <line x1="272" y1="70" x2="249" y2="70" stroke="#f0ece3" stroke-width="3"/><line x1="272" y1="70" x2="295" y2="70" stroke="#f0ece3" stroke-width="3"/>
+      <line x1="272" y1="82" x2="251" y2="106" stroke="#f0ece3" stroke-width="3.5"/><line x1="272" y1="82" x2="293" y2="106" stroke="#f0ece3" stroke-width="3.5"/>
+      <line x1="251" y1="106" x2="244" y2="124" stroke="#f0ece3" stroke-width="3"/><line x1="293" y1="106" x2="300" y2="124" stroke="#f0ece3" stroke-width="3"/>
+      <circle cx="242" cy="129" r="5" fill="#666"/><circle cx="302" cy="129" r="5" fill="#666"/>
+      <text x="272" y="143" text-anchor="middle" fill="#e05c2b" font-size="9" font-family="sans-serif">EN BAS</text>
+      <path d="M150,68 Q200,50 248,58" stroke="#f5a623" stroke-width="1.5" fill="none" stroke-dasharray="4"/>
+      <text x="200" y="20" text-anchor="middle" fill="#888" font-size="11" font-family="sans-serif">SQUATS — CUISSES + FESSIERS</text>
+    </svg></div>
+    <div class="ex-body">
+      <div class="ex-name">SQUATS</div><div class="ex-det">Cuisses · Fessiers · Mollets</div>
+      <div class="ex-sets"><span class="sb">4 séries</span><span class="sb">20 reps</span><span class="sb">repos 1 min</span></div>
+      <div class="loc">🏠 Partout</div>
+      <div class="ex-tips" style="margin-top:9px">👣 Pieds écartés largeur des épaules.<br>⬇️ Descends comme pour t'asseoir sur une chaise.<br>💥 Pousse sur les talons pour remonter.</div>
+    </div>
+  </div>
+
+  <!-- GAINAGE -->
+
+  <div class="ex">
+    <div class="ex-img"><svg viewBox="0 0 400 148" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="148" fill="#181818"/>
+      <line x1="30" y1="122" x2="370" y2="122" stroke="#2e2e2e" stroke-width="2"/>
+      <circle cx="112" cy="86" r="11" fill="#f5a623"/>
+      <line x1="112" y1="97" x2="278" y2="112" stroke="#f0ece3" stroke-width="12" stroke-linecap="round"/>
+      <circle cx="137" cy="110" r="6" fill="#e05c2b"/>
+      <circle cx="271" cy="122" r="5" fill="#666"/><circle cx="282" cy="122" r="5" fill="#666"/>
+      <line x1="198" y1="100" x2="198" y2="65" stroke="#4caf80" stroke-width="1.5" stroke-dasharray="4"/>
+      <text x="198" y="60" text-anchor="middle" fill="#4caf80" font-size="11" font-family="sans-serif">CORPS DROIT !</text>
+      <text x="200" y="20" text-anchor="middle" fill="#888" font-size="11" font-family="sans-serif">GAINAGE PLANCHE — ABDOMINAUX PROFONDS</text>
+      <rect x="310" y="76" width="70" height="26" rx="8" fill="#222" stroke="#2e2e2e"/>
+      <text x="345" y="94" text-anchor="middle" fill="#f5a623" font-size="14" font-weight="bold" font-family="sans-serif">45 sec</text>
+    </svg></div>
+    <div class="ex-body">
+      <div class="ex-name">GAINAGE PLANCHE</div><div class="ex-det">Abdos profonds · Lombaires · Épaules</div>
+      <div class="ex-sets"><span class="sb">3 séries</span><span class="sb">45–60 sec</span><span class="sb">repos 45 sec</span></div>
+      <div class="loc">🏠 Tapis de sol</div>
+      <div class="ex-tips" style="margin-top:9px">📐 Sur avant-bras et pointes de pieds.<br>🧲 Corps DROIT — ni trop haut, ni affaissé.<br>⏱️ Ajoute 5 secondes chaque semaine.</div>
+    </div>
+  </div>
+
+  <!-- CRUNCHS -->
+
+  <div class="ex">
+    <div class="ex-img"><svg viewBox="0 0 400 148" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="148" fill="#181818"/>
+      <line x1="30" y1="130" x2="370" y2="130" stroke="#2e2e2e" stroke-width="2"/>
+      <circle cx="200" cy="76" r="11" fill="#f5a623"/>
+      <line x1="200" y1="87" x2="200" y2="110" stroke="#f0ece3" stroke-width="10" stroke-linecap="round"/>
+      <line x1="200" y1="95" x2="178" y2="91" stroke="#f0ece3" stroke-width="3"/><line x1="200" y1="95" x2="222" y2="91" stroke="#f0ece3" stroke-width="3"/>
+      <line x1="200" y1="110" x2="182" y2="126" stroke="#f0ece3" stroke-width="4"/><line x1="200" y1="110" x2="218" y2="126" stroke="#f0ece3" stroke-width="4"/>
+      <line x1="182" y1="126" x2="178" y2="130" stroke="#f0ece3" stroke-width="3"/><line x1="218" y1="126" x2="222" y2="130" stroke="#f0ece3" stroke-width="3"/>
+      <circle cx="178" cy="130" r="4" fill="#666"/><circle cx="222" cy="130" r="4" fill="#666"/>
+      <text x="200" y="20" text-anchor="middle" fill="#888" font-size="11" font-family="sans-serif">CRUNCHS — ABDOMINAUX SUPÉRIEURS</text>
+      <text x="200" y="46" text-anchor="middle" fill="#f5a623" font-size="12" font-family="sans-serif">Contracte le ventre, remonte les épaules</text>
+      <text x="200" y="146" text-anchor="middle" fill="#e05c2b" font-size="10" font-family="sans-serif">❌ Ne tire PAS sur la nuque !</text>
+    </svg></div>
+    <div class="ex-body">
+      <div class="ex-name">CRUNCHS</div><div class="ex-det">Abdominaux supérieurs · Ventre plat</div>
+      <div class="ex-sets"><span class="sb">4 séries</span><span class="sb">20 reps</span><span class="sb">repos 45 sec</span></div>
+      <div class="loc">🏠 Tapis de sol</div>
+      <div class="ex-tips" style="margin-top:9px">🛋️ Allongé dos, genoux pliés, pieds à plat.<br>💨 Contracte le ventre en soufflant en montant.<br>⬆️ Seulement les épaules — pas le dos entier.</div>
+    </div>
+  </div>
+
+  <!-- MOUNTAIN CLIMBERS -->
+
+  <div class="ex">
+    <div class="ex-img"><svg viewBox="0 0 400 148" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="148" fill="#181818"/>
+      <line x1="30" y1="128" x2="370" y2="128" stroke="#2e2e2e" stroke-width="2"/>
+      <circle cx="106" cy="75" r="10" fill="#f5a623"/>
+      <line x1="106" y1="85" x2="292" y2="113" stroke="#f0ece3" stroke-width="10" stroke-linecap="round"/>
+      <circle cx="122" cy="107" r="6" fill="#e05c2b"/><circle cx="136" cy="111" r="5" fill="#e05c2b"/>
+      <line x1="232" y1="106" x2="207" y2="91" stroke="#5b9cf6" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="202" cy="87" r="6" fill="#5b9cf6"/>
+      <line x1="267" y1="112" x2="290" y2="128" stroke="#666" stroke-width="4" stroke-linecap="round"/>
+      <text x="200" y="57" text-anchor="middle" fill="#5b9cf6" font-size="12" font-weight="bold" font-family="sans-serif">↔ ALTERNE LES GENOUX VITE</text>
+      <text x="200" y="20" text-anchor="middle" fill="#888" font-size="11" font-family="sans-serif">MOUNTAIN CLIMBERS — CARDIO + ABDOS</text>
+    </svg></div>
+    <div class="ex-body">
+      <div class="ex-name">MOUNTAIN CLIMBERS</div><div class="ex-det">Cardio · Abdos · Full body</div>
+      <div class="ex-sets"><span class="sb">3 séries</span><span class="sb">20–30 reps</span><span class="sb">vite !</span></div>
+      <div class="loc">🏠 Salon / chambre</div>
+      <div class="ex-tips" style="margin-top:9px">🏔️ Position pompe bras tendus.<br>🦵 Ramène un genou vers la poitrine, échange vite.<br>🔥 Plus tu vas vite, plus ça brûle les graisses.</div>
+    </div>
+  </div>
+
+  <!-- SUPERMAN -->
+
+  <div class="ex">
+    <div class="ex-img"><svg viewBox="0 0 400 148" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="148" fill="#181818"/>
+      <line x1="30" y1="103" x2="370" y2="103" stroke="#2e2e2e" stroke-width="2"/>
+      <circle cx="200" cy="82" r="10" fill="#f5a623"/>
+      <ellipse cx="200" cy="98" rx="22" ry="8" fill="#c8c4bb" opacity=".9"/>
+      <line x1="200" y1="85" x2="147" y2="68" stroke="#f0ece3" stroke-width="3.5" stroke-linecap="round"/>
+      <line x1="200" y1="85" x2="253" y2="68" stroke="#f0ece3" stroke-width="3.5" stroke-linecap="round"/>
+      <circle cx="147" cy="66" r="5" fill="#e05c2b"/><circle cx="253" cy="66" r="5" fill="#e05c2b"/>
+      <line x1="200" y1="101" x2="155" y2="116" stroke="#f0ece3" stroke-width="3.5" stroke-linecap="round"/>
+      <line x1="200" y1="101" x2="245" y2="116" stroke="#f0ece3" stroke-width="3.5" stroke-linecap="round"/>
+      <circle cx="153" cy="118" r="5" fill="#5b9cf6"/><circle cx="247" cy="118" r="5" fill="#5b9cf6"/>
+      <text x="147" y="54" text-anchor="middle" fill="#e05c2b" font-size="10" font-family="sans-serif">↑ BRAS</text>
+      <text x="200" y="140" text-anchor="middle" fill="#5b9cf6" font-size="10" font-family="sans-serif">↑ JAMBES</text>
+      <text x="200" y="20" text-anchor="middle" fill="#888" font-size="11" font-family="sans-serif">SUPERMAN — DOS / LOMBAIRES</text>
+      <text x="200" y="46" text-anchor="middle" fill="#f5a623" font-size="11" font-family="sans-serif">Ventre au sol — bras ET jambes levés ensemble !</text>
+    </svg></div>
+    <div class="ex-body">
+      <div class="ex-name">SUPERMAN</div><div class="ex-det">Lombaires · Dos complet · Fessiers</div>
+      <div class="ex-sets"><span class="sb">3 séries</span><span class="sb">15 reps</span><span class="sb">tenir 2 sec</span></div>
+      <div class="loc">🏠 Tapis de sol</div>
+      <div class="ex-tips" style="margin-top:9px">🦸 Allongé ventre, bras tendus devant.<br>🚀 Soulève bras ET jambes en même temps.<br>⏸️ Tiens 2 secondes en haut, descends lentement.</div>
+    </div>
+  </div>
+
+  <!-- PONT FESSIER -->
+
+  <div class="ex">
+    <div class="ex-img"><svg viewBox="0 0 400 148" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="148" fill="#181818"/>
+      <line x1="30" y1="132" x2="370" y2="132" stroke="#2e2e2e" stroke-width="2"/>
+      <circle cx="98" cy="84" r="11" fill="#f5a623"/>
+      <line x1="98" y1="95" x2="128" y2="130" stroke="#f0ece3" stroke-width="4"/>
+      <line x1="128" y1="130" x2="152" y2="132" stroke="#f0ece3" stroke-width="3.5"/>
+      <circle cx="155" cy="132" r="5" fill="#666"/>
+      <line x1="98" y1="99" x2="208" y2="94" stroke="#f0ece3" stroke-width="12" stroke-linecap="round"/>
+      <line x1="78" y1="114" x2="98" y2="95" stroke="#f0ece3" stroke-width="3.5"/>
+      <circle cx="76" cy="117" r="5" fill="#666"/><circle cx="66" cy="117" r="5" fill="#666"/>
+      <line x1="208" y1="94" x2="238" y2="130" stroke="#f0ece3" stroke-width="4"/>
+      <line x1="238" y1="130" x2="258" y2="132" stroke="#f0ece3" stroke-width="3.5"/>
+      <circle cx="261" cy="132" r="5" fill="#666"/>
+      <text x="200" y="20" text-anchor="middle" fill="#888" font-size="11" font-family="sans-serif">PONT FESSIER — FESSIERS + LOMBAIRES</text>
+      <text x="153" y="70" fill="#f5a623" font-size="11" font-family="sans-serif">↑ BASSIN HAUT</text>
+      <line x1="150" y1="72" x2="155" y2="88" stroke="#f5a623" stroke-width="1.5" stroke-dasharray="3"/>
+      <text x="200" y="148" text-anchor="middle" fill="#4caf80" font-size="10" font-family="sans-serif">Contracte les fesses au maximum en haut !</text>
+    </svg></div>
+    <div class="ex-body">
+      <div class="ex-name">PONT FESSIER</div><div class="ex-det">Fessiers · Ischios · Lombaires</div>
+      <div class="ex-sets"><span class="sb">3 séries</span><span class="sb">20 reps</span><span class="sb">tenir 1 sec</span></div>
+      <div class="loc">🏠 Tapis de sol</div>
+      <div class="ex-tips" style="margin-top:9px">🛋️ Allongé dos, genoux pliés, pieds à plat.<br>⬆️ Monte le bassin en poussant sur les talons.<br>🍑 Contracte les fesses au maximum en haut.</div>
+    </div>
+  </div>
+</section>
+<!-- ═══ LAC ═══ -->
+<section id="lac">
+  <div class="stitle">🌊 Exercices au <span>Lac</span></div>
+  <div class="tip orange"><strong>🌳 Le lac c'est pas que du jogging.</strong> Tu peux faire une séance complète autour des bancs et de la pelouse.</div>
+
+  <!-- JOGGING INTERVALLES -->
+
+  <div class="ex">
+    <div class="ex-img"><svg viewBox="0 0 400 148" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="148" fill="#181818"/>
+      <ellipse cx="200" cy="94" rx="150" ry="35" fill="#0f1e2e" stroke="#1e3a4a" stroke-width="2"/>
+      <text x="200" y="98" text-anchor="middle" fill="#3a7a9a" font-size="12" font-family="sans-serif">LAC</text>
+      <ellipse cx="200" cy="94" rx="165" ry="47" fill="none" stroke="#444" stroke-width="3" stroke-dasharray="8,4"/>
+      <circle cx="336" cy="52" r="10" fill="#f5a623"/>
+      <line x1="336" y1="62" x2="336" y2="84" stroke="#f0ece3" stroke-width="3.5"/>
+      <line x1="336" y1="69" x2="320" y2="76" stroke="#f0ece3" stroke-width="3"/><line x1="336" y1="69" x2="352" y2="64" stroke="#f0ece3" stroke-width="3"/>
+      <line x1="336" y1="84" x2="324" y2="102" stroke="#f0ece3" stroke-width="3.5"/><line x1="336" y1="84" x2="348" y2="99" stroke="#f0ece3" stroke-width="3.5"/>
+      <rect x="12" y="16" width="11" height="8" rx="2" fill="#f5a623"/><text x="27" y="24" fill="#f0ece3" font-size="11" font-family="sans-serif">Tour marche rapide</text>
+      <rect x="12" y="32" width="11" height="8" rx="2" fill="#e05c2b"/><text x="27" y="40" fill="#f0ece3" font-size="11" font-family="sans-serif">Tour sprint (20 sec max !)</text>
+      <rect x="12" y="48" width="11" height="8" rx="2" fill="#5b9cf6"/><text x="27" y="56" fill="#f0ece3" font-size="11" font-family="sans-serif">Tours jogging modéré</text>
+      <text x="200" y="140" text-anchor="middle" fill="#888" font-size="10" font-family="sans-serif">Alterne : 2 tours jogging → 1 sprint → 2 tours jogging…</text>
+    </svg></div>
+    <div class="ex-body">
+      <div class="ex-name">JOGGING INTERVALLES</div><div class="ex-det">Cardio · Brûle-graisses · Souffle</div>
+      <div class="ex-sets"><span class="sb">6–10 tours</span><span class="sb">1 sprint / 3 tours</span><span class="sb">200–340 kcal</span></div>
+      <div class="loc">🌊 Autour du lac</div>
+      <div class="ex-tips" style="margin-top:9px">🚶 Sem 1 : marche rapide + jogging en alternance.<br>⚡ Sprint = donne tout 20 sec, puis récupère en jogging.<br>🔥 Les intervalles brûlent 30% plus de graisses que le jogging continu.</div>
+    </div>
+  </div>
+
+  <!-- POMPES SUR BANC -->
+
+  <div class="ex">
+    <div class="ex-img"><svg viewBox="0 0 400 148" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="148" fill="#181818"/>
+      <rect x="100" y="86" width="200" height="10" rx="4" fill="#7a5e10"/>
+      <rect x="108" y="96" width="10" height="30" fill="#5a4010"/><rect x="145" y="96" width="10" height="30" fill="#5a4010"/>
+      <rect x="245" y="96" width="10" height="30" fill="#5a4010"/><rect x="282" y="96" width="10" height="30" fill="#5a4010"/>
+      <circle cx="200" cy="58" r="11" fill="#f5a623"/>
+      <line x1="200" y1="69" x2="200" y2="86" stroke="#f0ece3" stroke-width="4"/>
+      <line x1="200" y1="74" x2="154" y2="84" stroke="#f0ece3" stroke-width="3.5"/><line x1="200" y1="74" x2="246" y2="84" stroke="#f0ece3" stroke-width="3.5"/>
+      <circle cx="154" cy="86" r="5" fill="#e05c2b"/><circle cx="246" cy="86" r="5" fill="#e05c2b"/>
+      <line x1="200" y1="86" x2="174" y2="126" stroke="#f0ece3" stroke-width="4"/><line x1="200" y1="86" x2="226" y2="126" stroke="#f0ece3" stroke-width="4"/>
+      <circle cx="172" cy="130" r="5" fill="#666"/><circle cx="228" cy="130" r="5" fill="#666"/>
+      <text x="200" y="20" text-anchor="middle" fill="#888" font-size="11" font-family="sans-serif">POMPES SUR BANC PUBLIC — PECS HAUT</text>
+      <text x="200" y="146" text-anchor="middle" fill="#f5a623" font-size="11" font-family="sans-serif">Mains sur le dossier → angle incliné → pecs haut</text>
+    </svg></div>
+    <div class="ex-body">
+      <div class="ex-name">POMPES SUR BANC PUBLIC</div><div class="ex-det">Pectoraux haut · Épaules</div>
+      <div class="ex-sets"><span class="sb">3 séries</span><span class="sb">15–20 reps</span><span class="sb">entre les tours</span></div>
+      <div class="loc">🌊 Bancs du lac</div>
+      <div class="ex-tips" style="margin-top:9px">🪑 Mains sur le dossier du banc = pecs haut.<br>💡 Pieds sur le banc = angle inversé = pecs bas.<br>⏱️ Fais-les entre deux tours de jogging.</div>
+    </div>
+  </div>
+
+  <!-- DIPS BANC -->
+
+  <div class="ex">
+    <div class="ex-img"><svg viewBox="0 0 400 148" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="148" fill="#181818"/>
+      <rect x="90" y="74" width="220" height="10" rx="4" fill="#7a5e10"/>
+      <rect x="98" y="84" width="10" height="34" fill="#5a4010"/><rect x="145" y="84" width="10" height="34" fill="#5a4010"/>
+      <rect x="248" y="84" width="10" height="34" fill="#5a4010"/><rect x="298" y="84" width="10" height="34" fill="#5a4010"/>
+      <circle cx="200" cy="48" r="11" fill="#f5a623"/>
+      <line x1="200" y1="59" x2="200" y2="74" stroke="#f0ece3" stroke-width="3.5"/>
+      <line x1="200" y1="64" x2="160" y2="74" stroke="#f0ece3" stroke-width="3"/><line x1="200" y1="64" x2="240" y2="74" stroke="#f0ece3" stroke-width="3"/>
+      <circle cx="160" cy="76" r="5" fill="#e05c2b"/><circle cx="240" cy="76" r="5" fill="#e05c2b"/>
+      <line x1="200" y1="74" x2="180" y2="120" stroke="#f0ece3" stroke-width="3.5"/><line x1="200" y1="74" x2="220" y2="120" stroke="#f0ece3" stroke-width="3.5"/>
+      <circle cx="178" cy="125" r="5" fill="#666"/><circle cx="222" cy="125" r="5" fill="#666"/>
+      <text x="200" y="20" text-anchor="middle" fill="#888" font-size="11" font-family="sans-serif">DIPS SUR BANC PUBLIC — TRICEPS</text>
+      <text x="200" y="143" text-anchor="middle" fill="#e05c2b" font-size="11" font-family="sans-serif">↓ Coudes pliés → bras qui poussent ↑</text>
+    </svg></div>
+    <div class="ex-body">
+      <div class="ex-name">DIPS SUR BANC PUBLIC</div><div class="ex-det">Triceps · Pectoraux bas</div>
+      <div class="ex-sets"><span class="sb">3 séries</span><span class="sb">15 reps</span><span class="sb">après jogging</span></div>
+      <div class="loc">🌊 Bancs du lac</div>
+      <div class="ex-tips" style="margin-top:9px">🪑 Mains sur le banc derrière toi, jambes étendues.<br>⬇️ Descends en pliant les coudes à 90°.<br>💪 Les bras remontent — pas les épaules.</div>
+    </div>
+  </div>
+
+  <!-- SQUAT JUMP -->
+
+  <div class="ex">
+    <div class="ex-img"><svg viewBox="0 0 400 148" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="148" fill="#181818"/>
+      <line x1="30" y1="134" x2="370" y2="134" stroke="#2e2e2e" stroke-width="2"/>
+      <circle cx="128" cy="74" r="10" fill="#f5a623"/>
+      <line x1="128" y1="84" x2="128" y2="104" stroke="#f0ece3" stroke-width="3.5"/>
+      <line x1="128" y1="91" x2="108" y2="91" stroke="#f0ece3" stroke-width="3"/><line x1="128" y1="91" x2="148" y2="91" stroke="#f0ece3" stroke-width="3"/>
+      <line x1="128" y1="104" x2="111" y2="124" stroke="#f0ece3" stroke-width="3.5"/><line x1="128" y1="104" x2="145" y2="124" stroke="#f0ece3" stroke-width="3.5"/>
+      <line x1="111" y1="124" x2="106" y2="134" stroke="#f0ece3" stroke-width="3"/><line x1="145" y1="124" x2="150" y2="134" stroke="#f0ece3" stroke-width="3"/>
+      <text x="128" y="148" text-anchor="middle" fill="#e05c2b" font-size="9" font-family="sans-serif">BAS</text>
+      <circle cx="272" cy="33" r="10" fill="#f5a623"/>
+      <line x1="272" y1="43" x2="272" y2="67" stroke="#f0ece3" stroke-width="3.5"/>
+      <line x1="272" y1="50" x2="250" y2="45" stroke="#f0ece3" stroke-width="3"/><line x1="272" y1="50" x2="294" y2="45" stroke="#f0ece3" stroke-width="3"/>
+      <line x1="272" y1="67" x2="259" y2="85" stroke="#f0ece3" stroke-width="3.5"/><line x1="272" y1="67" x2="285" y2="85" stroke="#f0ece3" stroke-width="3.5"/>
+      <circle cx="257" cy="88" r="5" fill="#666"/><circle cx="287" cy="88" r="5" fill="#666"/>
+      <text x="272" y="106" text-anchor="middle" fill="#4caf80" font-size="9" font-family="sans-serif">SAUT !</text>
+      <path d="M148,70 Q200,30 250,39" stroke="#f5a623" stroke-width="1.5" fill="none" stroke-dasharray="4"/>
+      <text x="200" y="20" text-anchor="middle" fill="#888" font-size="11" font-family="sans-serif">SQUAT JUMP — EXPLOSIF + CARDIO</text>
+    </svg></div>
+    <div class="ex-body">
+      <div class="ex-name">SQUAT JUMP</div><div class="ex-det">Cuisses · Cardio · Explosivité</div>
+      <div class="ex-sets"><span class="sb">3 séries</span><span class="sb">15 reps</span><span class="sb">entre tours</span></div>
+      <div class="loc">🌊 N'importe où au lac</div>
+      <div class="ex-tips" style="margin-top:9px">⬇️ Descends en squat, puis...<br>💥 SAUTE le plus haut possible !<br>🦶 Réception douce sur les pointes de pieds.<br>🔥 Brûle énormément de calories.</div>
+    </div>
+  </div>
+
+  <!-- STEP UP -->
+
+  <div class="ex">
+    <div class="ex-img"><svg viewBox="0 0 400 148" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="148" fill="#181818"/>
+      <line x1="30" y1="134" x2="370" y2="134" stroke="#2e2e2e" stroke-width="2"/>
+      <rect x="130" y="94" width="140" height="18" rx="5" fill="#7a5e10"/>
+      <rect x="138" y="112" width="10" height="22" fill="#5a4010"/><rect x="252" y="112" width="10" height="22" fill="#5a4010"/>
+      <circle cx="200" cy="46" r="11" fill="#f5a623"/>
+      <line x1="200" y1="57" x2="200" y2="81" stroke="#f0ece3" stroke-width="4"/>
+      <line x1="200" y1="67" x2="178" y2="76" stroke="#f0ece3" stroke-width="3"/><line x1="200" y1="67" x2="222" y2="74" stroke="#f0ece3" stroke-width="3"/>
+      <line x1="200" y1="81" x2="178" y2="94" stroke="#e05c2b" stroke-width="4"/>
+      <circle cx="178" cy="94" r="6" fill="#e05c2b"/>
+      <line x1="200" y1="81" x2="220" y2="114" stroke="#f0ece3" stroke-width="4"/>
+      <circle cx="220" cy="118" r="5" fill="#666"/>
+      <text x="200" y="20" text-anchor="middle" fill="#888" font-size="11" font-family="sans-serif">STEP-UP BANC — CUISSES + CARDIO</text>
+      <text x="200" y="143" text-anchor="middle" fill="#f5a623" font-size="11" font-family="sans-serif">Pose un pied sur le banc, pousse, échange</text>
+    </svg></div>
+    <div class="ex-body">
+      <div class="ex-name">STEP-UP SUR BANC</div><div class="ex-det">Cuisses · Fessiers · Cardio</div>
+      <div class="ex-sets"><span class="sb">3 séries</span><span class="sb">20 reps</span><span class="sb">10 par jambe</span></div>
+      <div class="loc">🌊 Bancs du lac</div>
+      <div class="ex-tips" style="margin-top:9px">🦶 Pose un pied sur le banc.<br>⬆️ Pousse sur ce pied pour monter complètement.<br>🔄 Redescends lentement, échange les jambes.<br>💥 Parfait entre deux tours de jogging.</div>
+    </div>
+  </div>
+
+  <!-- BURPEES -->
+
+  <div class="ex">
+    <div class="ex-img"><svg viewBox="0 0 400 148" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="148" fill="#181818"/>
+      <circle cx="52" cy="26" r="9" fill="#f5a623"/>
+      <line x1="52" y1="35" x2="52" y2="66" stroke="#f0ece3" stroke-width="3"/>
+      <line x1="52" y1="66" x2="41" y2="86" stroke="#f0ece3" stroke-width="3"/><line x1="52" y1="66" x2="63" y2="86" stroke="#f0ece3" stroke-width="3"/>
+      <text x="52" y="100" text-anchor="middle" fill="#f5a623" font-size="9" font-family="sans-serif">1.DEBOUT</text>
+      <circle cx="136" cy="48" r="9" fill="#f5a623"/>
+      <line x1="136" y1="57" x2="136" y2="74" stroke="#f0ece3" stroke-width="3"/>
+      <line x1="136" y1="63" x2="116" y2="70" stroke="#f0ece3" stroke-width="3"/><line x1="136" y1="63" x2="156" y2="70" stroke="#f0ece3" stroke-width="3"/>
+      <line x1="136" y1="74" x2="120" y2="90" stroke="#f0ece3" stroke-width="3"/><line x1="136" y1="74" x2="152" y2="90" stroke="#f0ece3" stroke-width="3"/>
+      <text x="136" y="104" text-anchor="middle" fill="#e05c2b" font-size="9" font-family="sans-serif">2.ACCROUPI</text>
+      <circle cx="213" cy="67" r="8" fill="#f5a623"/>
+      <line x1="213" y1="75" x2="343" y2="87" stroke="#f0ece3" stroke-width="7" stroke-linecap="round"/>
+      <circle cx="229" cy="83" r="5" fill="#e05c2b"/><circle cx="339" cy="87" r="4" fill="#666"/>
+      <text x="278" y="104" text-anchor="middle" fill="#5b9cf6" font-size="9" font-family="sans-serif">3.PLANCHE</text>
+      <text x="200" y="120" text-anchor="middle" fill="#f5a623" font-size="11" font-family="sans-serif">Debout → Accroupi → Planche → Pompe → SAUT !</text>
+      <text x="200" y="140" text-anchor="middle" fill="#888" font-size="10" font-family="sans-serif">10 burpees = ~60 kcal en 3 min. Redoutable !</text>
+    </svg></div>
+    <div class="ex-body">
+      <div class="ex-name">BURPEES</div><div class="ex-det">Full body · Cardio intense · Brûle-graisses</div>
+      <div class="ex-sets"><span class="sb">3 séries</span><span class="sb">10 reps</span><span class="sb">repos 1 min 30</span></div>
+      <div class="loc">🌊 Lac · 🏠 Maison</div>
+      <div class="ex-tips" style="margin-top:9px">1️⃣ Debout → accroupi, mains au sol.<br>2️⃣ Saute les pieds derrière → position planche.<br>3️⃣ Pompe + saute les pieds → saute haut bras en l'air.<br>🔥 Le meilleur exercice cardio sans matos !</div>
+    </div>
+  </div>
+
+  <!-- GAINAGE LATERAL -->
+
+  <div class="ex">
+    <div class="ex-img"><svg viewBox="0 0 400 148" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="148" fill="#181818"/>
+      <line x1="30" y1="122" x2="370" y2="122" stroke="#2e2e2e" stroke-width="2"/>
+      <circle cx="92" cy="70" r="11" fill="#f5a623"/>
+      <line x1="92" y1="81" x2="286" y2="112" stroke="#f0ece3" stroke-width="14" stroke-linecap="round"/>
+      <circle cx="112" cy="103" r="7" fill="#e05c2b"/>
+      <line x1="148" y1="91" x2="148" y2="61" stroke="#5b9cf6" stroke-width="3.5"/>
+      <circle cx="148" cy="59" r="5" fill="#5b9cf6"/>
+      <circle cx="278" cy="121" r="5" fill="#666"/><circle cx="289" cy="122" r="5" fill="#666"/>
+      <text x="200" y="20" text-anchor="middle" fill="#888" font-size="11" font-family="sans-serif">GAINAGE LATÉRAL — OBLIQUES / TAILLE</text>
+      <text x="200" y="42" text-anchor="middle" fill="#e05c2b" font-size="11" font-family="sans-serif">Corps droit comme une planche sur le côté</text>
+      <text x="200" y="140" text-anchor="middle" fill="#5b9cf6" font-size="10" font-family="sans-serif">Bras levé vers le ciel = version difficile</text>
+    </svg></div>
+    <div class="ex-body">
+      <div class="ex-name">GAINAGE LATÉRAL</div><div class="ex-det">Obliques · Taille · Gainage complet</div>
+      <div class="ex-sets"><span class="sb">3 séries</span><span class="sb">30 sec chaque côté</span><span class="sb">repos 30 sec</span></div>
+      <div class="loc">🌊 Pelouse du lac · 🏠 Tapis</div>
+      <div class="ex-tips" style="margin-top:9px">👤 Sur un avant-bras, corps droit sur le côté.<br>📐 Hanches ne doivent pas toucher le sol.<br>🎯 Parfait pour affiner la taille et les flancs.</div>
+    </div>
+  </div>
+</section>
+<!-- ═══ HALTERES ═══ -->
+<section id="halt">
+  <div class="stitle">🏋️ Avec des <span>Haltères</span></div>
+  <div class="tip orange"><strong>💰 Budget :</strong> Paire d'haltères 2×10 kg ajustables → <strong>~30–45€ sur Amazon ou Leboncoin.</strong> Ça change tout pour les bras.</div>
+  <div class="hc">
+    <div class="ctitle">🛒 Quoi acheter ?</div>
+    <div style="font-size:13px;line-height:1.9;color:var(--text)">
+      <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #3a3a3a"><span>Paire haltères 2×10 kg ajustables</span><span style="color:var(--accent);font-weight:700">~35€</span></div>
+      <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #3a3a3a"><span>Barre de traction (porte)</span><span style="color:var(--accent);font-weight:700">~25€</span></div>
+      <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #3a3a3a"><span>Bande élastique résistance</span><span style="color:var(--accent);font-weight:700">~10€</span></div>
+      <div style="display:flex;justify-content:space-between;padding:5px 0"><span>Tapis de sol</span><span style="color:var(--accent);font-weight:700">~15€</span></div>
+    </div>
+  </div>
+
+  <!-- CURL BICEPS -->
+
+  <div class="ex">
+    <div class="ex-img"><svg viewBox="0 0 400 148" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="148" fill="#181818"/>
+      <circle cx="200" cy="22" r="13" fill="#f5a623"/>
+      <line x1="200" y1="35" x2="200" y2="86" stroke="#f0ece3" stroke-width="5"/>
+      <line x1="200" y1="52" x2="155" y2="67" stroke="#f0ece3" stroke-width="3.5"/>
+      <line x1="155" y1="67" x2="145" y2="46" stroke="#e05c2b" stroke-width="3.5"/>
+      <rect x="135" y="39" width="18" height="8" rx="2" fill="#f5a623"/>
+      <rect x="133" y="38" width="4" height="10" rx="1" fill="#666"/><rect x="153" y="38" width="4" height="10" rx="1" fill="#666"/>
+      <line x1="200" y1="52" x2="245" y2="70" stroke="#f0ece3" stroke-width="3.5"/>
+      <line x1="245" y1="70" x2="251" y2="87" stroke="#888" stroke-width="3.5"/>
+      <rect x="246" y="87" width="16" height="7" rx="2" fill="#3a3a3a"/>
+      <line x1="200" y1="86" x2="184" y2="126" stroke="#f0ece3" stroke-width="4"/><line x1="200" y1="86" x2="216" y2="126" stroke="#f0ece3" stroke-width="4"/>
+      <circle cx="184" cy="131" r="5" fill="#666"/><circle cx="216" cy="131" r="5" fill="#666"/>
+      <text x="200" y="145" text-anchor="middle" fill="#f5a623" font-size="11" font-family="sans-serif">↑ Monte lentement (2s) — descends lentement (3s)</text>
+      <text x="200" y="12" text-anchor="middle" fill="#888" font-size="11" font-family="sans-serif">CURL BICEPS — BICEPS</text>
+    </svg></div>
+    <div class="ex-body">
+      <div class="ex-name">CURL BICEPS</div><div class="ex-det">Biceps · Avant-bras</div>
+      <div class="ex-sets"><span class="sb">3–4 séries</span><span class="sb">10–12 reps</span><span class="sb">8–12 kg</span></div>
+      <div class="loc">🏠 Maison</div>
+      <div class="ex-tips" style="margin-top:9px">🤏 Tiens un haltère dans chaque main.<br>📌 Coudes FIXES contre le corps.<br>💪 LE meilleur exercice pour les biceps.</div>
+    </div>
+  </div>
+
+  <!-- DEVELOPPE COUCHE -->
+
+  <div class="ex">
+    <div class="ex-img"><svg viewBox="0 0 400 148" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="148" fill="#181818"/>
+      <rect x="80" y="104" width="240" height="12" rx="4" fill="#2e2e2e"/>
+      <circle cx="106" cy="84" r="11" fill="#f5a623"/>
+      <rect x="111" y="78" width="155" height="22" rx="8" fill="#b8b4ab" opacity=".9"/>
+      <line x1="136" y1="80" x2="136" y2="51" stroke="#f0ece3" stroke-width="4"/><line x1="238" y1="80" x2="238" y2="51" stroke="#f0ece3" stroke-width="4"/>
+      <rect x="124" y="44" width="24" height="9" rx="3" fill="#f5a623"/>
+      <rect x="122" y="43" width="5" height="11" rx="1" fill="#666"/><rect x="148" y="43" width="5" height="11" rx="1" fill="#666"/>
+      <rect x="226" y="44" width="24" height="9" rx="3" fill="#f5a623"/>
+      <rect x="224" y="43" width="5" height="11" rx="1" fill="#666"/><rect x="250" y="43" width="5" height="11" rx="1" fill="#666"/>
+      <text x="200" y="20" text-anchor="middle" fill="#888" font-size="11" font-family="sans-serif">DÉVELOPPÉ COUCHÉ HALTÈRES — PECS</text>
+      <text x="200" y="136" text-anchor="middle" fill="#f5a623" font-size="11" font-family="sans-serif">↕ Descends jusqu'à poitrine — pousse vers le haut</text>
+    </svg></div>
+    <div class="ex-body">
+      <div class="ex-name">DÉVELOPPÉ COUCHÉ</div><div class="ex-det">Pectoraux · Triceps · Épaules</div>
+      <div class="ex-sets"><span class="sb">4 séries</span><span class="sb">12–15 reps</span><span class="sb">8–12 kg</span></div>
+      <div class="loc">🏠 Sol / tapis</div>
+      <div class="ex-tips" style="margin-top:9px">🛋️ Allongé sur le sol, genoux pliés.<br>⬇️ Descends les haltères jusqu'à la poitrine.<br>🔄 Remplace avantageusement les pompes larges !</div>
+    </div>
+  </div>
+
+  <!-- ROWING -->
+
+  <div class="ex">
+    <div class="ex-img"><svg viewBox="0 0 400 148" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="148" fill="#181818"/>
+      <rect x="100" y="88" width="80" height="10" rx="3" fill="#5a4010"/>
+      <rect x="116" y="98" width="8" height="30" fill="#4a3010"/><rect x="165" y="98" width="8" height="30" fill="#4a3010"/>
+      <circle cx="175" cy="55" r="11" fill="#f5a623"/>
+      <line x1="175" y1="66" x2="157" y2="88" stroke="#f0ece3" stroke-width="4"/>
+      <line x1="157" y1="88" x2="136" y2="88" stroke="#f0ece3" stroke-width="3.5"/>
+      <circle cx="136" cy="88" r="5" fill="#e05c2b"/>
+      <line x1="175" y1="74" x2="252" y2="91" stroke="#f0ece3" stroke-width="3.5"/>
+      <line x1="252" y1="91" x2="256" y2="68" stroke="#5b9cf6" stroke-width="3.5"/>
+      <rect x="248" y="61" width="18" height="8" rx="2" fill="#f5a623"/>
+      <rect x="246" y="60" width="4" height="10" rx="1" fill="#666"/><rect x="266" y="60" width="4" height="10" rx="1" fill="#666"/>
+      <line x1="157" y1="88" x2="147" y2="126" stroke="#f0ece3" stroke-width="3.5"/><line x1="157" y1="88" x2="184" y2="126" stroke="#f0ece3" stroke-width="3.5"/>
+      <text x="200" y="20" text-anchor="middle" fill="#888" font-size="11" font-family="sans-serif">ROWING HALTÈRE — DOS + BICEPS</text>
+      <text x="256" y="50" text-anchor="middle" fill="#5b9cf6" font-size="10" font-family="sans-serif">↑ Tire vers hanche</text>
+    </svg></div>
+    <div class="ex-body">
+      <div class="ex-name">ROWING HALTÈRE</div><div class="ex-det">Dos · Biceps · Trapèzes</div>
+      <div class="ex-sets"><span class="sb">3–4 séries</span><span class="sb">10–12 reps</span><span class="sb">10–12 kg</span></div>
+      <div class="loc">🏠 Chaise + sol</div>
+      <div class="ex-tips" style="margin-top:9px">🪑 Une main sur la chaise, dos parallèle au sol.<br>⬆️ Tire l'haltère vers ta hanche.<br>🎯 Contracte le dos en haut — serre l'omoplate.</div>
+    </div>
+  </div>
+
+  <!-- ELEVATIONS LATERALES -->
+
+  <div class="ex">
+    <div class="ex-img"><svg viewBox="0 0 400 148" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="148" fill="#181818"/>
+      <circle cx="200" cy="27" r="13" fill="#f5a623"/>
+      <line x1="200" y1="40" x2="200" y2="97" stroke="#f0ece3" stroke-width="5"/>
+      <line x1="200" y1="54" x2="126" y2="72" stroke="#e05c2b" stroke-width="3.5"/><line x1="200" y1="54" x2="274" y2="72" stroke="#e05c2b" stroke-width="3.5"/>
+      <rect x="110" y="69" width="18" height="7" rx="2" fill="#f5a623"/>
+      <rect x="108" y="68" width="4" height="9" rx="1" fill="#666"/><rect x="128" y="68" width="4" height="9" rx="1" fill="#666"/>
+      <rect x="272" y="69" width="18" height="7" rx="2" fill="#f5a623"/>
+      <rect x="270" y="68" width="4" height="9" rx="1" fill="#666"/><rect x="290" y="68" width="4" height="9" rx="1" fill="#666"/>
+      <line x1="200" y1="97" x2="184" y2="134" stroke="#f0ece3" stroke-width="4"/><line x1="200" y1="97" x2="216" y2="134" stroke="#f0ece3" stroke-width="4"/>
+      <circle cx="184" cy="139" r="5" fill="#666"/><circle cx="216" cy="139" r="5" fill="#666"/>
+      <text x="200" y="14" text-anchor="middle" fill="#888" font-size="11" font-family="sans-serif">ÉLÉVATIONS LATÉRALES — ÉPAULES</text>
+      <text x="200" y="148" text-anchor="middle" fill="#e05c2b" font-size="10" font-family="sans-serif">Bras à l'horizontale — coudes légèrement fléchis</text>
+    </svg></div>
+    <div class="ex-body">
+      <div class="ex-name">ÉLÉVATIONS LATÉRALES</div><div class="ex-det">Épaules · Trapèzes</div>
+      <div class="ex-sets"><span class="sb">3 séries</span><span class="sb">12–15 reps</span><span class="sb">5–8 kg</span></div>
+      <div class="loc">🏠 Debout n'importe où</div>
+      <div class="ex-tips" style="margin-top:9px">🦅 Debout, haltères le long du corps.<br>↔️ Monte les bras à l'horizontale — pas plus haut.<br>💡 Donne aux épaules leur rondeur et largeur.</div>
+    </div>
+  </div>
+
+  <div class="tip green"><strong>📋 Plan :</strong> Ajoute 2 séries de curl + 2 séries développé couché après chaque circuit pecs/bras. Tu doubles le volume en +15 minutes seulement.</div>
+</section>
+<!-- ═══ RECETTES ═══ -->
+<section id="recettes">
+  <div class="stitle">🍽️ <span>Recettes</span> petite faim</div>
+  <div class="tip orange"><strong>🍼 Appétit d'enfant ?</strong> Chaque recette a une note en vert avec la portion réduite et ses calories. Mange 5 petits repas plutôt que 3 gros.</div>
+
+  <div class="ch"><div class="ico">🌅</div><div><div class="ct">PETITS DÉJEUNERS</div><div class="cs">400–500 kcal · Simple · Rapide</div></div></div>
+
+  <div class="rc">
+    <div class="rh"><div><div class="rn">PANCAKES BANANE 🥞</div><div class="rsub"><span class="tag green">Petit déj</span><span class="sweet">SUCRÉ</span></div></div><div class="rkcal"><div class="n">480</div><div class="l">kcal</div></div></div>
+    <div class="rb">
+      <div class="ri">🥚 2 œufs · 🥛 100 ml lait · 🌾 80 g farine · 🍌 1 banane · 🧈 beurre</div>
+      <ol class="rs"><li>Écrase la banane à la fourchette dans un bol.</li><li>Ajoute œufs + lait + farine, mélange bien.</li><li>Poêle chaude avec beurre — verse une louche de pâte.</li><li>2 min d'un côté, 1 min de l'autre.</li><li>Sers avec yaourt grec + miel ou Nutella.</li></ol>
+      <div class="rm"><div class="mb">Protéines <span>28g</span></div><div class="mb">Glucides <span>65g</span></div><div class="mb">Lipides <span>14g</span></div></div>
+      <div class="pn">🍼 2 petits pancakes au lieu de 3 → ~300 kcal.</div>
+    </div>
+  </div>
+
+  <div class="rc">
+    <div class="rh"><div><div class="rn">TARTINES BEURRE CACAHUÈTE 🥜</div><div class="rsub"><span class="tag green">Petit déj</span><span class="sweet">SUCRÉ</span></div></div><div class="rkcal"><div class="n">420</div><div class="l">kcal</div></div></div>
+    <div class="rb">
+      <div class="ri">🍞 2 tranches pain · 🥜 2 c.s. beurre cacahuète · 🍌 ½ banane · 🥛 1 verre lait</div>
+      <ol class="rs"><li>Toaste le pain (meilleur chaud).</li><li>Étale généreusement le beurre de cacahuète.</li><li>Rondelles de banane par-dessus.</li><li>Bois le lait à côté. Done en 3 minutes !</li></ol>
+      <div class="rm"><div class="mb">Protéines <span>18g</span></div><div class="mb">Glucides <span>52g</span></div><div class="mb">Lipides <span>18g</span></div></div>
+      <div class="pn">🍼 1 tartine au lieu de 2 → ~250 kcal. Idéal petit appétit.</div>
+    </div>
+  </div>
+
+  <div class="rc">
+    <div class="rh"><div><div class="rn">SMOOTHIE BANANE CACAO 🍫</div><div class="rsub"><span class="tag green">Petit déj</span><span class="sweet">SUCRÉ</span></div></div><div class="rkcal"><div class="n">380</div><div class="l">kcal</div></div></div>
+    <div class="rb">
+      <div class="ri">🍌 1 banane · 🥛 300 ml lait · 🥛 2 c.s. fromage blanc · 🍫 1 c.s. cacao</div>
+      <ol class="rs"><li>Tout dans un blender ou shaker.</li><li>Mixe 30 secondes. Bois directement !</li></ol>
+      <div class="rm"><div class="mb">Protéines <span>22g</span></div><div class="mb">Glucides <span>55g</span></div><div class="mb">Lipides <span>8g</span></div></div>
+      <div class="pn">🍼 Bois en plusieurs fois si besoin. Idéal quand t'as pas faim le matin.</div>
+    </div>
+  </div>
+
+  <div class="ch"><div class="ico">🍽️</div><div><div class="ct">DÉJEUNERS</div><div class="cs">550–650 kcal · Protéinés · Portions adaptables</div></div></div>
+
+  <div class="rc">
+    <div class="rh"><div><div class="rn">PÂTES BOLOGNAISE 🍝</div><span class="tag orange">Déjeuner</span></div><div class="rkcal"><div class="n">620</div><div class="l">kcal</div></div></div>
+    <div class="rb">
+      <div class="ri">🍝 80 g pâtes · 🥩 150 g viande hachée · 🥫 3 c.s. sauce tomate · 🧀 fromage râpé</div>
+      <ol class="rs"><li>Lance les pâtes dans l'eau bouillante salée (10 min).</li><li>Fais revenir la viande hachée à la poêle 5 min.</li><li>Ajoute la sauce tomate, mélange 2 min à feu doux.</li><li>Égoutte les pâtes, verse la sauce dessus.</li><li>Fromage râpé par-dessus. Régale-toi !</li></ol>
+      <div class="rm"><div class="mb">Protéines <span>45g</span></div><div class="mb">Glucides <span>65g</span></div><div class="mb">Lipides <span>18g</span></div></div>
+      <div class="pn">🍼 60 g pâtes + 100 g viande si petite faim → ~470 kcal.</div>
+    </div>
+  </div>
+
+  <div class="rc">
+    <div class="rh"><div><div class="rn">CURRY POULET RIZ 🍛</div><span class="tag orange">Déjeuner</span></div><div class="rkcal"><div class="n">580</div><div class="l">kcal</div></div></div>
+    <div class="rb">
+      <div class="ri">🍗 150 g poulet · 🍚 70 g riz · 🥫 3 c.s. sauce curry · 🥛 1 c.s. crème</div>
+      <ol class="rs"><li>Lance le riz (10 min).</li><li>Poulet en dés à la poêle 5 min à feu vif.</li><li>Sauce curry + crème, mélange 2 min à feu doux.</li><li>Sers le poulet sur le riz. Yaourt grec dessus si tu veux.</li></ol>
+      <div class="rm"><div class="mb">Protéines <span>42g</span></div><div class="mb">Glucides <span>58g</span></div><div class="mb">Lipides <span>14g</span></div></div>
+      <div class="pn">🍼 50 g riz + 120 g poulet si petite faim → ~440 kcal.</div>
+    </div>
+  </div>
+
+  <div class="rc">
+    <div class="rh"><div><div class="rn">BURGER MAISON 🍔</div><span class="tag orange">Déjeuner</span></div><div class="rkcal"><div class="n">600</div><div class="l">kcal</div></div></div>
+    <div class="rb">
+      <div class="ri">🍔 1 pain burger · 🥩 1 steak haché · 🧀 1 tranche fromage · 🥫 ketchup/mayo</div>
+      <ol class="rs"><li>Steak haché à la poêle 3 min de chaque côté.</li><li>Fromage dessus, laisse fondre 1 min.</li><li>Toaste le pain 1 min à la poêle.</li><li>Assemble avec sauce. Optionnel : tomate / salade.</li></ol>
+      <div class="rm"><div class="mb">Protéines <span>40g</span></div><div class="mb">Glucides <span>48g</span></div><div class="mb">Lipides <span>22g</span></div></div>
+      <div class="pn">🍼 Un seul burger suffit. Ajoute fromage blanc pour les protéines.</div>
+    </div>
+  </div>
+
+  <div class="rc">
+    <div class="rh"><div><div class="rn">PIZZA PAIN DE MIE 🍕</div><span class="tag orange">Déjeuner</span></div><div class="rkcal"><div class="n">540</div><div class="l">kcal</div></div></div>
+    <div class="rb">
+      <div class="ri">🍞 2 tranches pain de mie · 🥫 sauce tomate · 🧀 fromage râpé · 🥓 jambon</div>
+      <ol class="rs"><li>Tranches de pain de mie sur une plaque.</li><li>Sauce tomate + fromage + jambon par-dessus.</li><li>Four 200° pendant 8 min (ou poêle couverte 5 min).</li><li>C'est une vraie mini-pizza — délicieux !</li></ol>
+      <div class="rm"><div class="mb">Protéines <span>30g</span></div><div class="mb">Glucides <span>55g</span></div><div class="mb">Lipides <span>18g</span></div></div>
+      <div class="pn">🍼 1 tranche pain de mie si petite faim → ~320 kcal.</div>
+    </div>
+  </div>
+
+  <div class="rc">
+    <div class="rh"><div><div class="rn">PÂTES SAUCE CRÉMEUSE 🧀</div><span class="tag orange">Déjeuner</span></div><div class="rkcal"><div class="n">590</div><div class="l">kcal</div></div></div>
+    <div class="rb">
+      <div class="ri">🍝 80 g pâtes · 🥛 2 c.s. fromage blanc · 🧀 30 g fromage râpé · 🥓 jambon · 🧄 ail</div>
+      <ol class="rs"><li>Cuis les pâtes. Garde 3 c.s. d'eau de cuisson.</li><li>Mélange fromage blanc + fromage râpé + ail dans un bol.</li><li>Égoutte les pâtes, ajoute la sauce + eau de cuisson.</li><li>Jambon en morceaux par-dessus. Mange chaud !</li></ol>
+      <div class="rm"><div class="mb">Protéines <span>38g</span></div><div class="mb">Glucides <span>68g</span></div><div class="mb">Lipides <span>16g</span></div></div>
+      <div class="pn">🍼 60 g pâtes si petite faim → ~450 kcal.</div>
+    </div>
+  </div>
+
+  <div class="rc">
+    <div class="rh"><div><div class="rn">WRAPS POULET FROMAGE 🌯</div><span class="tag orange">Déjeuner</span></div><div class="rkcal"><div class="n">520</div><div class="l">kcal</div></div></div>
+    <div class="rb">
+      <div class="ri">🌮 1 tortilla · 🍗 120 g poulet cuit · 🧀 fromage râpé · 🥫 sauce au choix</div>
+      <ol class="rs"><li>Réchauffe la tortilla 30 sec micro-ondes.</li><li>Poulet en lamelles au centre.</li><li>Fromage + sauce (ketchup, mayo légère...).</li><li>Roule et mange. Prêt en 5 minutes !</li></ol>
+      <div class="rm"><div class="mb">Protéines <span>38g</span></div><div class="mb">Glucides <span>42g</span></div><div class="mb">Lipides <span>16g</span></div></div>
+      <div class="pn">🍼 Un wrap = repas parfait taille enfant. Yaourt grec à côté.</div>
+    </div>
+  </div>
+
+  <div class="rc">
+    <div class="rh"><div><div class="rn">NOUILLES SAUTÉES POULET 🍜</div><span class="tag orange">Déjeuner</span></div><div class="rkcal"><div class="n">560</div><div class="l">kcal</div></div></div>
+    <div class="rb">
+      <div class="ri">🍝 80 g pâtes · 🍗 120 g poulet · 🫙 sauce soja · 🧀 fromage (optionnel)</div>
+      <ol class="rs"><li>Cuis les pâtes, égoutte-les.</li><li>Poulet en dés à la poêle 5 min.</li><li>Ajoute les pâtes + sauce soja, saute 2 min.</li><li>Fromage râpé si tu veux. Mega bon !</li></ol>
+      <div class="rm"><div class="mb">Protéines <span>40g</span></div><div class="mb">Glucides <span>62g</span></div><div class="mb">Lipides <span>12g</span></div></div>
+      <div class="pn">🍼 60 g pâtes si petite faim → ~420 kcal.</div>
+    </div>
+  </div>
+
+  <div class="ch"><div class="ico">🌙</div><div><div class="ct">DÎNERS</div><div class="cs">350–450 kcal · Léger · Protéiné · Zéro pain le soir</div></div></div>
+
+  <div class="rc">
+    <div class="rh"><div><div class="rn">OMELETTE JAMBON FROMAGE 🍳</div><span class="tag blue">Dîner</span></div><div class="rkcal"><div class="n">390</div><div class="l">kcal</div></div></div>
+    <div class="rb">
+      <div class="ri">🥚 3 œufs · 🧀 30 g fromage râpé · 🥓 2 tranches jambon · 🧈 beurre · sel poivre</div>
+      <ol class="rs"><li>Bats 3 œufs avec sel et poivre.</li><li>Poêle avec beurre à feu moyen.</li><li>Verse les œufs, laisse prendre 2 min sans toucher.</li><li>Jambon + fromage sur une moitié, replie. C'est prêt !</li></ol>
+      <div class="rm"><div class="mb">Protéines <span>36g</span></div><div class="mb">Glucides <span>3g</span></div><div class="mb">Lipides <span>26g</span></div></div>
+      <div class="pn">🍼 2 œufs au lieu de 3 si petite faim → ~280 kcal.</div>
+    </div>
+  </div>
+
+  <div class="rc">
+    <div class="rh"><div><div class="rn">BOWL THON RIZ 🐟</div><span class="tag blue">Dîner</span></div><div class="rkcal"><div class="n">380</div><div class="l">kcal</div></div></div>
+    <div class="rb">
+      <div class="ri">🐟 1 boîte thon · 🍚 50 g riz · 🫙 sauce soja · 🥛 1 c.s. fromage blanc</div>
+      <ol class="rs"><li>Lance le riz (10 min). Égoutte le thon.</li><li>Mélange thon + fromage blanc + sauce soja dans un bol.</li><li>Sers sur le riz. Quelques gouttes de citron si tu veux.</li></ol>
+      <div class="rm"><div class="mb">Protéines <span>38g</span></div><div class="mb">Glucides <span>42g</span></div><div class="mb">Lipides <span>5g</span></div></div>
+      <div class="pn">🍼 30 g riz si petite faim → ~290 kcal. Parfait !</div>
+    </div>
+  </div>
+
+  <div class="rc">
+    <div class="rh"><div><div class="rn">POULET SAUCE + RIZ 🍗</div><span class="tag blue">Dîner</span></div><div class="rkcal"><div class="n">420</div><div class="l">kcal</div></div></div>
+    <div class="rb">
+      <div class="ri">🍗 150 g blanc poulet · 🍚 50 g riz · 🥫 sauce au choix · 🧄 ail</div>
+      <ol class="rs"><li>Lance le riz.</li><li>Blanc de poulet entier à la poêle 4 min de chaque côté.</li><li>Tranche en lamelles, verse la sauce dessus.</li><li>Sers sur le riz (le riz est optionnel le soir).</li></ol>
+      <div class="rm"><div class="mb">Protéines <span>44g</span></div><div class="mb">Glucides <span>40g</span></div><div class="mb">Lipides <span>8g</span></div></div>
+      <div class="pn">🍼 100 g poulet sans riz si petite faim → ~250 kcal. Ultra léger.</div>
+    </div>
+  </div>
+
+  <div class="ch"><div class="ico">🍫</div><div><div class="ct">SUCRÉ AUTORISÉ</div><div class="cs">Avant ou après sport · Plaisir sans culpabilité</div></div></div>
+  <div class="tip green"><strong>🎯 Règle :</strong> Sucré avant le sport = carburant. Sucré après le sport = récupération. Jamais seul sur le canapé le soir sans avoir bougé.</div>
+
+  <div class="rc">
+    <div class="rh"><div><div class="rn">BOL YAOURT MIEL BANANE 🍯</div><div class="rsub"><span class="tag green">Avant sport</span><span class="sweet">SUCRÉ</span></div></div><div class="rkcal"><div class="n">260</div><div class="l">kcal</div></div></div>
+    <div class="rb">
+      <div class="ri">🥛 1 yaourt grec · 🍌 ½ banane · 🍯 1 c.s. miel · 🌾 petite poignée flocons avoine</div>
+      <ol class="rs"><li>Yaourt grec dans un bol.</li><li>Banane coupée + miel + flocons d'avoine.</li><li>Mange 30 min avant le sport. Énergie parfaite !</li></ol>
+      <div class="rm"><div class="mb">Protéines <span>15g</span></div><div class="mb">Glucides <span>40g</span></div></div>
+      <div class="pn">🍼 Juste yaourt + miel → ~180 kcal. Idéal petit appétit.</div>
+    </div>
+  </div>
+
+  <div class="rc">
+    <div class="rh"><div><div class="rn">FROMAGE BLANC NUTELLA 🍫</div><div class="rsub"><span class="tag blue">Après sport</span><span class="sweet">SUCRÉ</span></div></div><div class="rkcal"><div class="n">280</div><div class="l">kcal</div></div></div>
+    <div class="rb">
+      <div class="ri">🥛 150 g fromage blanc · 🍫 1 c.s. Nutella · 🍌 ½ banane</div>
+      <ol class="rs"><li>Fromage blanc dans un bol.</li><li>Cuillère de Nutella au centre.</li><li>Rondelles de banane autour.</li><li>Mange dans l'heure après le sport !</li></ol>
+      <div class="rm"><div class="mb">Protéines <span>18g</span></div><div class="mb">Glucides <span>38g</span></div><div class="mb">Lipides <span>7g</span></div></div>
+      <div class="pn">🍼 100 g fromage blanc si petite faim → ~200 kcal.</div>
+    </div>
+  </div>
+
+  <div class="rc">
+    <div class="rh"><div><div class="rn">TARTINES NUTELLA + LAIT 🍫</div><div class="rsub"><span class="tag green">Collation</span><span class="sweet">SUCRÉ</span></div></div><div class="rkcal"><div class="n">320</div><div class="l">kcal</div></div></div>
+    <div class="rb">
+      <div class="ri">🍞 1 tranche pain · 🍫 1 c.s. Nutella · 🥛 1 grand verre lait froid</div>
+      <ol class="rs"><li>Toaste la tranche de pain.</li><li>Étale le Nutella généreusement.</li><li>Grand verre de lait froid à côté.</li><li>Collation parfaite avant le sport du matin !</li></ol>
+      <div class="rm"><div class="mb">Protéines <span>14g</span></div><div class="mb">Glucides <span>44g</span></div><div class="mb">Lipides <span>10g</span></div></div>
+      <div class="pn">🍼 1 tranche = portion parfaite pour un petit appétit.</div>
+    </div>
+  </div>
+
+  <div class="rc">
+    <div class="rh"><div><div class="rn">LAIT CHAUD CACAO 🍵</div><div class="rsub"><span class="tag purple">Avant dodo</span><span class="sweet">SUCRÉ</span></div></div><div class="rkcal"><div class="n">200</div><div class="l">kcal</div></div></div>
+    <div class="rb">
+      <div class="ri">🥛 250 ml lait · 🍫 1 c.s. cacao · 🍯 1 c.s. miel</div>
+      <ol class="rs"><li>Chauffe le lait (pas bouillir).</li><li>Ajoute cacao + miel, mélange bien.</li><li>Bois 30 min avant de dormir.</li><li>La caséine du lait nourrit tes muscles toute la nuit !</li></ol>
+      <div class="rm"><div class="mb">Protéines <span>12g</span></div><div class="mb">Glucides <span>28g</span></div><div class="mb">Lipides <span>5g</span></div></div>
+      <div class="pn">🍼 Parfait avant dodo — ni trop lourd, ni trop sucré.</div>
+    </div>
+  </div>
+</section>
+<!-- ═══ SUIVI ═══ -->
+<section id="suivi">
+  <div class="stitle">📊 Mon <span>Suivi</span></div>
+  <div class="tip orange"><strong>📝</strong> Note tes résultats chaque soir. En 4 semaines tu verras ta progression. C'est ça qui te garde motivé.</div>
+  <div class="card">
+    <div class="ctitle">📅 Journal du jour</div>
+    <div class="tr"><span class="tl">💪 Pompes total</span><input type="number" class="ti" id="tp" placeholder="0"></div>
+    <div class="tr"><span class="tl">🏃 Tours au lac</span><input type="number" class="ti" id="tt" placeholder="0"></div>
+    <div class="tr"><span class="tl">💧 Verres d'eau</span><input type="number" class="ti" id="te" placeholder="0"></div>
+    <div class="tr"><span class="tl">⏱️ Finisher (sec)</span><input type="number" class="ti" id="tf" placeholder="0"></div>
+    <div class="tr"><span class="tl">😊 Ressenti /10</span><input type="number" class="ti" id="tr2" placeholder="0" min="1" max="10"></div>
+    <button class="sbtn" onclick="saveDay()">ENREGISTRER MA JOURNÉE</button>
+  </div>
+  <div class="card" id="logcard" style="display:none">
+    <div class="ctitle">📈 Historique</div>
+    <div id="loglist"></div>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <div class="ctitle">🏆 Objectifs semaine par semaine</div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px;font-weight:700;color:var(--text)">SEMAINE 1</span><span style="font-size:12px;color:var(--muted)">30 pompes · 6 tours lac</span></div><div class="pbw"><div class="pb" style="width:25%;background:linear-gradient(90deg,#4caf80,#4caf80)"></div></div></div>
+      <div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px;font-weight:700;color:var(--text)">SEMAINE 2</span><span style="font-size:12px;color:var(--muted)">40 pompes · 6 tours jogging</span></div><div class="pbw"><div class="pb" style="width:50%"></div></div></div>
+      <div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px;font-weight:700;color:var(--text)">SEMAINE 3</span><span style="font-size:12px;color:var(--muted)">50 pompes · 8 tours jogging</span></div><div class="pbw"><div class="pb" style="width:75%"></div></div></div>
+      <div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px;font-weight:700;color:var(--text)">SEMAINE 4</span><span style="font-size:12px;color:var(--muted)">100 pompes · 10 tours jogging</span></div><div class="pbw"><div class="pb" style="width:100%;background:linear-gradient(90deg,#e05c2b,#f5a623)"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<script>
+function show(id,btn){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+let logs=[];
+try{logs=JSON.parse(sessionStorage.getItem('pclogs')||'[]')}catch(e){}
+function saveDay(){
+  const p=document.getElementById('tp').value||'—';
+  const t=document.getElementById('tt').value||'—';
+  const e=document.getElementById('te').value||'—';
+  const f=document.getElementById('tf').value||'—';
+  const r=document.getElementById('tr2').value||'—';
+  const d=new Date().toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'});
+  logs.unshift({date:d,p,t,e,f,r});
+  try{sessionStorage.setItem('pclogs',JSON.stringify(logs))}catch(e){}
+  renderLogs();
+  ['tp','tt','te','tf','tr2'].forEach(id=>{document.getElementById(id).value=''});
+  const btn=document.querySelector('.sbtn');
+  btn.textContent='✅ ENREGISTRÉ !';
+  setTimeout(()=>btn.textContent='ENREGISTRER MA JOURNÉE',2000);
+}
+function renderLogs(){
+  const c=document.getElementById('logcard');
+  const l=document.getElementById('loglist');
+  if(!logs.length){c.style.display='none';return}
+  c.style.display='block';
+  l.innerHTML=logs.map(e=>`<div class="le"><span class="ld">${e.date}</span><span>💪${e.p} &nbsp;🏃${e.t} tours &nbsp;😊${e.r}/10</span></div>`).join('');
+}
+renderLogs();
+</script>
+
+</body>
+</html>
